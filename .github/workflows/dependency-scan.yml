@@ -74,11 +74,6 @@ jobs:
         run: npm ci
         working-directory: frontend
 
-      - name: Audit NPM dependencies
-        run: npm audit --audit-level=moderate
-        working-directory: frontend
-        continue-on-error: true
-
       - name: Check for critical vulnerabilities
         run: |
           output=$(npm audit --json)
