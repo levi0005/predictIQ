@@ -47,7 +47,7 @@ jobs:
           fetch-depth: 0
 
       - name: Generate changelog with git-cliff
-        uses: orhun/git-cliff-action@b946ed27a675d653b308f29a7bbad813b85bf7aa # v3
+        uses: orhun/git-cliff-action@3d96a18cc4ec17e9dc69ddcc424ccafaf1f78ce2 # v4.9.0
         id: cliff
         with:
           config: cliff.toml
@@ -74,7 +74,7 @@ jobs:
           add-paths: CHANGELOG.md
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
         with:
           body: ${{ steps.cliff.outputs.content }}
           tag_name: ${{ github.ref_name }}
@@ -139,7 +139,7 @@ jobs:
           WASM_SIZE_LIMIT_BYTES: "65536"
 
       - name: Upload WASM to GitHub Release
-        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
         with:
           files: contracts/predict-iq/target/wasm32-unknown-unknown/release/predict_iq_optimized.wasm
           tag_name: ${{ github.ref_name }}

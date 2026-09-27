@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useActiveNavItem } from '../../../hooks/useActiveNavItem';
 import '../../styles/admin.css';
 
 function AdminAuthGate({ children }: { children: React.ReactNode }) {
@@ -46,9 +46,20 @@ function AdminAuthGate({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
+function AdminNavLink({ href, label }: { href: string; label: string }) {
+  const isActive = useActiveNavItem(href);
+  return (
+    <Link
+      href={href}
+      className={`admin-nav-link ${isActive ? 'active' : ''}`}
+      aria-current={isActive ? 'page' : undefined}
+    >
+      {label}
+    </Link>
+  );
+}
 
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const navItems = [
     { href: '/admin/email/preview', label: 'Email Preview' },
     { href: '/admin/email/analytics', label: 'Email Analytics' },
@@ -79,19 +90,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
 
             <nav className="admin-nav" aria-label="Admin sub-navigation">
-              {navItems.map((item) => {
-                const isActive = pathname === item.href || pathname?.startsWith(`${item.href}/`);
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`admin-nav-link ${isActive ? 'active' : ''}`}
-                    aria-current={isActive ? 'page' : undefined}
-                  >
-                    {item.label}
-                  </Link>
-                );
-              })}
+              {navItems.map((item) => (
+                <AdminNavLink key={item.href} href={item.href} label={item.label} />
+              ))}
             </nav>
 
             <div>

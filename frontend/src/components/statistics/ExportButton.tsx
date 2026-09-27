@@ -14,6 +14,13 @@ interface ExportButtonProps {
 }
 
 /**
+ * UTF-8 byte order mark. Excel mis-detects the encoding of BOM-less UTF-8
+ * CSVs and can mangle non-ASCII characters (e.g. market titles) on open, so
+ * the CSV export is prefixed with this marker.
+ */
+const UTF8_BOM = '\uFEFF';
+
+/**
  * Formats a numeric CSV cell with a fixed `.` decimal separator and no
  * thousands grouping, so files opened in a different-locale spreadsheet app
  * (which may treat `,` as the decimal separator or the column delimiter)
@@ -43,7 +50,7 @@ function sectionsToCsv(sections: ExportSection[]): string {
     }
     return lines.join('\n');
   });
-  return blocks.join('\n\n');
+  return UTF8_BOM + blocks.join('\n\n');
 }
 
 function sectionsToJson(sections: ExportSection[]): string {
